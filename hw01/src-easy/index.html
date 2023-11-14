@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)https://tjhsieh.github.io/c/vis/vis2023f/hw01/src-easy/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        table, th, td {
+            border: 1px solid blue;
+            margin: 10px auto;
+            padding: 1px 3px;
+        }
+        
+    </style>
+</head>
+ 
+<body data-new-gr-c-s-check-loaded="14.1137.0" data-gr-ext-installed="">
+        <br><br>
+
+        <button type="button" onclick="tableToCSV()">
+            download CSV
+        </button>
+    
+
+    <script type="text/javascript">
+// https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript
+
+        function createArray(length) {
+            var arr = new Array(length || 0),
+                i = length;
+
+            if (arguments.length > 1) {
+                var args = Array.prototype.slice.call(arguments, 1);
+                while(i--) arr[length-1 - i] = createArray.apply(this, args);
+            }
+
+            return arr;
+        }
+
+        data_table = createArray(121, 15);     // [] or new Array()
+        data_table[0] = ['序號', '班級', '學號', '姓名', 'GitHub 帳號', '作業一', '作業二', '作業三', '作業四', '作業五', '作業六', '作業七', '作業八', '作業九', '作業十'];
+
+        const year = [111, 112];
+        const department = ['資工系', '資工所', '電資AI', '電資資安', '創新AI'];
+        const department_id = ['590', '598', 'C52', 'C53', 'C71'];
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+
+        for (var i = 1; i < data_table.length; i++) {
+
+            let random_num = Math.floor(Math.random() * 5)
+
+            data_table[i][0] = i;
+            data_table[i][1] = department[random_num];
+            data_table[i][2] = year[Math.floor(Math.random() * 2)] + department_id[random_num] + String(Math.floor(Math.random()*999)+1).padStart(3, '0');
+            //data_table[i][1] = '路人甲'; // 4E00-9FFF
+            //data_table[i][1] = String.fromCharCode(0x6771);
+            data_table[i][3] = String.fromCharCode(Math.floor(Math.random() * 0x51ff + 0x4e00)) +
+                    String.fromCharCode(Math.floor(Math.random() * 0x51ff + 0x4e00)) +
+                    String.fromCharCode(Math.floor(Math.random() * 0x51ff + 0x4e00));
+            
+            
+            //data_table[i][2] = 'github';
+            // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+            // Math.random() 會回傳一個偽隨機小數 (pseudo-random) 介於 0 到 1 之間(包含 0，不包含 1) 
+            // str.substring(indexStart[, indexEnd])
+            // number.toString(radix) 10個數字 + 26個英文字母 = 36
+            let randomString = '';
+            for(let i = 0; i<10; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                randomString += characters.charAt(randomIndex);
+            }
+
+            data_table[i][4] = randomString
+
+            
+            for (var j = 5; j < data_table[0].length; j++) {
+                data_table[i][j] = Math.floor(Math.random() * 11);
+            }
+        }
+        //alert(a3);
+
+
+
+        // https://medium.com/wdstack/quick-blurb-generating-a-table-from-an-array-in-javascript-41386fd449a9
+        //setup our table array
+        
+        //create a Table Object
+        let table = document.createElement('table');
+        //iterate over every array(row) within tableArr
+        for (let row of data_table) {
+        //Insert a new row element into the table element
+            table.insertRow();
+            //Iterate over every index(cell) in each array(row)
+            for (let cell of row) {
+            //While iterating over the index(cell)
+            //insert a cell into the table element
+                let newCell = table.rows[table.rows.length - 1].insertCell();
+            //add text to the created cell element
+                newCell.textContent = cell;
+            }
+        }
+        //append the compiled table to the DOM
+        document.body.appendChild(table);
+
+
+        function tableToCSV() {
+ 
+            // Variable to store the final csv data
+            var csv_data = [];
+ 
+            // Get each row data
+            var rows = document.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+ 
+                // Get each column data
+                var cols = rows[i].querySelectorAll('td,th');
+ 
+                // Stores each csv row data
+                var csvrow = [];
+                for (var j = 0; j < cols.length; j++) {
+ 
+                    // Get the text data of each cell
+                    // of a row and push it to csvrow
+                    csvrow.push(cols[j].innerHTML);
+                }
+ 
+                // Combine each column value with comma
+                csv_data.push(csvrow.join(","));
+            }
+ 
+            // Combine each row data with new line character
+            csv_data = csv_data.join('\n');
+ 
+            // Call this function to download csv file 
+            downloadCSVFile(csv_data);
+ 
+        }
+ 
+        function downloadCSVFile(csv_data) {
+ 
+            // Create CSV file object and feed
+            // our csv_data into it
+            CSVFile = new Blob([csv_data], {
+                type: "text/csv"
+            });
+ 
+            // Create to temporary link to initiate
+            // download process
+            var temp_link = document.createElement('a');
+ 
+            // Download csv file
+            temp_link.download = "data.csv";
+            var url = window.URL.createObjectURL(CSVFile);
+            temp_link.href = url;
+ 
+            // This link should not be displayed
+            temp_link.style.display = "none";
+            document.body.appendChild(temp_link);
+ 
+            // Automatically click the link to
+            // trigger download
+            temp_link.click();
+            document.body.removeChild(temp_link);
+        }
+    </script>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+    div.grammarly-desktop-integration {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select:none;
+      user-select:none;
+    }
+
+    div.grammarly-desktop-integration:before {
+      content: attr(data-content);
+    }
+  </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
