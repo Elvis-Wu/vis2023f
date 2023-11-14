@@ -1,0 +1,14 @@
+{
+  "name": "afb436537538d58d",
+  "main": "afb436537538d58d@24.js",
+  "version": "24.0.0",
+  "homepage": "https://observablehq.com/d/afb436537538d58d",
+  "author": {
+    "name": "北科大-吳威勝's Workspace",
+    "url": "https://observablehq.com/@bei-ke-da-wu-wei-sheng-ws"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
