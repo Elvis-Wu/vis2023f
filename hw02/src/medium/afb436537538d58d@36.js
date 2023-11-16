@@ -35,18 +35,14 @@ function _5(yCounts,years,data)
 }
 
 
-function _6(Plot,plot2,yCounts){return(
+function _6(Plot,yCounts){return(
 Plot.plot({
-  marginTop: plot2.mt,
-  marginRight: plot2.mr,
-  marginBottom: plot2.mb,
-  marginLeft: plot2.ml,
   
   grid: true,
   y: {label: "count"},
   marks: [
     Plot.ruleY([0]),
-    Plot.barY(yCounts, {x: "year", y: "count", tip: true , fill:"gender"}),
+    Plot.barY(yCounts, {x: "year", y: "count", tip: true }),
   ]
 })
 )}
@@ -57,6 +53,31 @@ Inputs.form({
 	mr:  Inputs.range([0, 100], {label: "marginRight", step: 1}),
 	mb:  Inputs.range([0, 100], {label: "marginBottom", step: 1}),
 	ml:  Inputs.range([0, 100], {label: "marginLeft", step: 1}),
+  // 參考111598087 邱凡洺
+  r:  Inputs.range([0, 255], {label: "color_r", step: 1}),
+	g:  Inputs.range([0, 255], {label: "color_g", step: 1}),
+	b:  Inputs.range([0, 255], {label: "color_b", step: 1}),
+  tip_choose: Inputs.range([0, 1], {label: "tip", step: 1})
+})
+)}
+
+function _fill_Color(plot2){return(
+`rgb(${plot2.r},${plot2.g},${plot2.b})`
+)}
+
+function _9(Plot,plot2,yCounts,fill_Color){return(
+Plot.plot({
+  marginTop: plot2.mt, 
+	marginRight: plot2.mr, 
+	marginBottom: plot2.mb, 
+	marginLeft: plot2.ml, 
+  
+  grid: true,
+  y: {label: "count"},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.barY(yCounts, {x: "year", y: "count", tip: plot2.tip_choose, fill:fill_Color }),
+  ]
 })
 )}
 
@@ -72,8 +93,10 @@ export default function define(runtime, observer) {
   main.variable(observer("yCounts")).define("yCounts", _yCounts);
   main.variable(observer("years")).define("years", ["data"], _years);
   main.variable(observer()).define(["yCounts","years","data"], _5);
-  main.variable(observer()).define(["Plot","plot2","yCounts"], _6);
+  main.variable(observer()).define(["Plot","yCounts"], _6);
   main.variable(observer("viewof plot2")).define("viewof plot2", ["Inputs"], _plot2);
   main.variable(observer("plot2")).define("plot2", ["Generators", "viewof plot2"], (G, _) => G.input(_));
+  main.variable(observer("fill_Color")).define("fill_Color", ["plot2"], _fill_Color);
+  main.variable(observer()).define(["Plot","plot2","yCounts","fill_Color"], _9);
   return main;
 }
