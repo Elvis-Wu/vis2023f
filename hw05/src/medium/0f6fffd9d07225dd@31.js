@@ -295,8 +295,8 @@ FileAttachment("output.json").json()
 function _medium3(d3,medium3_data,drag,invalidation)
 {
   // 指定圖表的尺寸。
-  const width = 500;
-  const height = 400;
+  const width = 1500;
+  const height = 1000;
 
   // 計算圖形並啟動力模擬。
   const root = d3.hierarchy(medium3_data);
