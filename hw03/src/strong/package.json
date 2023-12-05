@@ -1,0 +1,14 @@
+{
+  "name": "d33c597a40cda2b8",
+  "main": "d33c597a40cda2b8@74.js",
+  "version": "74.0.0",
+  "homepage": "https://observablehq.com/d/d33c597a40cda2b8",
+  "author": {
+    "name": "北科大-吳威勝's Workspace",
+    "url": "https://observablehq.com/@bei-ke-da-wu-wei-sheng-ws"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
